@@ -1,84 +1,121 @@
 package pekan9_2511533013;
 
-public class BtreeDriver_2511533013 {
+import java.util.*;
 
+public class GraphTraversal_2511533013 {
+
+    private static Map<String, List<String>> graph_3013 = new HashMap<>();
+
+    // Menambahkan edge
+    public static void addEdge(String node1_3013, String node2_3013) {
+
+        graph_3013.putIfAbsent(node1_3013, new ArrayList<>());
+        graph_3013.putIfAbsent(node2_3013, new ArrayList<>());
+
+        graph_3013.get(node1_3013).add(node2_3013);
+        graph_3013.get(node2_3013).add(node1_3013);
+    }
+
+    // Menampilkan graph
+    public void printGraph() {
+
+        System.out.println("Graf Awal (Adjacency List):");
+
+        for (String node_3013 : graph_3013.keySet()) {
+
+            System.out.print(node_3013 + " -> ");
+
+            List<String> neighbors_3013 = graph_3013.get(node_3013);
+
+            System.out.println(String.join(", ", neighbors_3013));
+        }
+
+        System.out.println();
+    }
+
+    // DFS
+    public void dfs(String start_3013) {
+
+        Set<String> visited_3013 = new HashSet<>();
+
+        System.out.println("Penelusuran DFS :");
+
+        dfsHelper(start_3013, visited_3013);
+
+        System.out.println();
+    }
+
+    // Helper DFS
+    private void dfsHelper(String current_3013,
+                           Set<String> visited_3013) {
+
+        if (visited_3013.contains(current_3013)) {
+            return;
+        }
+
+        visited_3013.add(current_3013);
+
+        System.out.print(current_3013 + " ");
+
+        for (String neighbor_3013 : graph_3013.get(current_3013)) {
+
+            dfsHelper(neighbor_3013, visited_3013);
+        }
+    }
+
+    // BFS
+    public void bfs(String start_3013) {
+
+        Set<String> visited_3013 = new HashSet<>();
+
+        Queue<String> queue_3013 = new LinkedList<>();
+
+        queue_3013.add(start_3013);
+
+        visited_3013.add(start_3013);
+
+        System.out.println("Penelusuran BFS :");
+
+        while (!queue_3013.isEmpty()) {
+
+            String current_3013 = queue_3013.poll();
+
+            System.out.print(current_3013 + " ");
+
+            for (String neighbor_3013 : graph_3013.get(current_3013)) {
+
+                if (!visited_3013.contains(neighbor_3013)) {
+
+                    queue_3013.add(neighbor_3013);
+
+                    visited_3013.add(neighbor_3013);
+                }
+            }
+        }
+
+        System.out.println();
+    }
+
+    // Main
     public static void main(String[] args) {
 
-        BTree_2511533013 tree_3013 = new BTree_2511533013();
+        GraphTraversal_2511533013 graph =
+                new GraphTraversal_2511533013();
 
-        System.out.println("Jumlah simpul awal pohon: "
-                + tree_3013.countNodes());
+        // Contoh graph
+        graph.addEdge("A", "B");
+        graph.addEdge("A", "C");
+        graph.addEdge("B", "D");
+        graph.addEdge("B", "E");
 
-        // Membuat root
-        Node_2511533013 root =
-                new Node_2511533013(1);
+        // Cetak graph
+        System.out.println("Graf Awal adalah:");
 
-        tree_3013.setRoot(root);
+        graph.printGraph();
 
-        System.out.println("Jumlah simpul setelah root ditambahkan: "
-                + tree_3013.countNodes());
+        // DFS dan BFS
+        graph.dfs("A");
 
-        // Membuat node
-        Node_2511533013 node2 =
-                new Node_2511533013(2);
-
-        Node_2511533013 node3 =
-                new Node_2511533013(3);
-
-        Node_2511533013 node4 =
-                new Node_2511533013(4);
-
-        Node_2511533013 node5 =
-                new Node_2511533013(5);
-
-        Node_2511533013 node6 =
-                new Node_2511533013(6);
-
-        Node_2511533013 node7 =
-                new Node_2511533013(7);
-
-        Node_2511533013 node8 =
-                new Node_2511533013(8);
-
-        Node_2511533013 node9 =
-                new Node_2511533013(9);
-
-        // Membentuk tree
-        root.setLeft(node2);
-        root.setRight(node3);
-
-        node2.setLeft(node4);
-        node2.setRight(node5);
-
-        node3.setLeft(node6);
-        node3.setRight(node7);
-
-        node4.setLeft(node8);
-
-        node6.setLeft(node9);
-
-        // Set current
-        tree_3013.setCurrent(tree_3013.getRoot());
-
-        System.out.println("Menampilkan simpul current:");
-        System.out.println(
-                tree_3013.getCurrent().getData());
-
-        System.out.println("Jumlah simpul setelah semua node ditambahkan:");
-        System.out.println(tree_3013.countNodes());
-
-        // Traversal
-        System.out.println("InOrder:");
-        tree_3013.inOrder();
-
-        System.out.println("\nPreOrder:");
-        tree_3013.preOrder();
-
-        System.out.println("\nPostOrder:");
-        tree_3013.postOrder();
-
-        // Print tree
-        System.out.println("\nMenampilkan simpul dalam bentuk pohon:");
-        tree_3013.print();
+        graph.bfs("A");
     }
 }
